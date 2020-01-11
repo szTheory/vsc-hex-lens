@@ -3,6 +3,9 @@ import { HexPackage, Details } from "../hexPackage";
 import { RebarDependencyExtractor } from "../hex_dependency_extractors/rebarDependencyExtractor";
 import { MixDependencyExtractor } from "../hex_dependency_extractors/mixDependencyExtractor";
 
+const LANGUAGE_ID_ERLANG = "erlang";
+const LANGUAGE_ID_ELIXIR = "elixir";
+
 export class AbstractProvider implements vscode.HoverProvider {
   public async provideHover(
     document: vscode.TextDocument,
@@ -12,17 +15,17 @@ export class AbstractProvider implements vscode.HoverProvider {
     const range = document.getWordRangeAtPosition(position);
     const documentText = document.getText();
     const line = document.lineAt(position.line).text.trim();
+    // const hoverWord = document.getWordRangeAtPosition(position);
+    const hoverWord = document.getText(range);
 
     let extractor = null;
-    if (document.languageId === "erlang") {
-      extractor = new RebarDependencyExtractor();
-    } else if (document.languageId === "elixir") {
-      extractor = new MixDependencyExtractor();
+    if (document.languageId === LANGUAGE_ID_ERLANG) {
+      extractor = new RebarDependencyExtractor(documentText, line, hoverWord);
+    } else if (document.languageId === LANGUAGE_ID_ELIXIR) {
+      extractor = new MixDependencyExtractor(documentText, line, hoverWord);
     }
 
-    const hexDependency = extractor
-      ? extractor.extractHexDependency(documentText, line)
-      : null;
+    const hexDependency = extractor ? extractor.extractHexDependency() : null;
 
     if (!hexDependency) {
       return;

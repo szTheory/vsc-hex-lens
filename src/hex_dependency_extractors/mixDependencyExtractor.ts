@@ -5,11 +5,15 @@ const LINE_NAME_DEPENDENCY_REGEXP = /\{:(\w+),?.*\}/;
 const LINE_VERSION_REGEXP = /[\"\'].+\s+([\d\.]*\d)[\"\'].+/;
 
 export class MixDependencyExtractor extends HexDependencyExtractor {
-  constructor() {
-    super(
-      DOC_TEXT_DEPENDENCIES_REGEXP,
-      LINE_NAME_DEPENDENCY_REGEXP,
-      LINE_VERSION_REGEXP
-    );
+  docTextDepsRegexp(): RegExp {
+    return DOC_TEXT_DEPENDENCIES_REGEXP;
+  }
+
+  lineNameDepRegexp(): RegExp {
+    return LINE_NAME_DEPENDENCY_REGEXP;
+  }
+
+  lineVersionDepRegexp(): RegExp {
+    return LINE_VERSION_REGEXP;
   }
 }

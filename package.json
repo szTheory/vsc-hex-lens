@@ -64,6 +64,7 @@
 	},
 	"dependencies": {
 		"axios": "^0.19.1",
+		"erlang-shen-js": "0.0.2",
 		"jem.js": "^1.0.0"
 	}
 }

@@ -4,25 +4,34 @@ import { MixProvider } from "./providers/mixProvider";
 
 export function activate(context: vscode.ExtensionContext): void {
   console.log("Hex lens extension activated");
-  const rebarFile: vscode.DocumentFilter = {
-    language: "erlang",
-    pattern: "**/rebar.config",
-    scheme: "file"
-  };
-  context.subscriptions.push(
-    vscode.languages.registerHoverProvider(rebarFile, new RebarProvider())
-  );
-
-  const mixFile: vscode.DocumentFilter = {
-    language: "elixir",
-    pattern: "**/mix.exs",
-    scheme: "file"
-  };
-  context.subscriptions.push(
-    vscode.languages.registerHoverProvider(mixFile, new MixProvider())
-  );
+  subscribeHoverProviderRebar(context);
+  subscribeHoverProviderMix(context);
 }
 
 export function deactivate(): void {
   return;
 }
+
+function subscribeHoverProviderRebar(context: vscode.ExtensionContext): void {
+  context.subscriptions.push(
+    vscode.languages.registerHoverProvider(REBAR_FILE, new RebarProvider())
+  );
+}
+
+function subscribeHoverProviderMix(context: vscode.ExtensionContext): void {
+  context.subscriptions.push(
+    vscode.languages.registerHoverProvider(MIX_FILE, new MixProvider())
+  );
+}
+
+const REBAR_FILE: vscode.DocumentFilter = {
+  language: "erlang",
+  pattern: "**/rebar.config",
+  scheme: "file"
+};
+
+const MIX_FILE: vscode.DocumentFilter = {
+  language: "elixir",
+  pattern: "**/mix.exs",
+  scheme: "file"
+};
