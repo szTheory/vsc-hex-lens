@@ -1,6 +1,4 @@
-import axios, { AxiosAdapter, AxiosResponse } from "axios";
-// import * as rm from "typed-rest-client/RestClient";
-const JSON5 = require("json5");
+import axios from "axios";
 
 export class HexPackage {
   name: string;
@@ -11,12 +9,10 @@ export class HexPackage {
     this.requirements = requirements;
   }
 
-  async details(): Promise<Details | undefined> {
-    console.log("------details");
-    console.log("name: " + this.name);
+  async details(): Promise<Details | null> {
     const r: DetailsResponse | null = await this.apiResponseJson();
     if (r === null) {
-      return undefined;
+      return null;
     }
 
     const details: Details = {
@@ -32,22 +28,15 @@ export class HexPackage {
   }
 
   async apiResponseJson(): Promise<DetailsResponse | null> {
-    console.log("------apiResponseData");
     const apiUrl = `https://hex.pm/api/packages/${this.name}`;
 
     const response = await axios.get<DetailsResponse>(apiUrl, {
       headers: { "User-Agent": "VS Code Hex Package Lens extension" },
       responseType: "json"
     });
-    console.log("1");
     if (response.status !== 200) {
       return null;
     }
-    console.log("2");
-    console.log(response.data);
-    // const json = JSON5.parse(response.data);
-    console.log("3");
-    // return json;
     return response.data;
   }
 }
