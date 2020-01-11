@@ -9,7 +9,6 @@ export class AbstractProvider implements vscode.HoverProvider {
     position: vscode.Position,
     token: vscode.CancellationToken
   ): Promise<vscode.Hover | undefined> {
-
     const range = document.getWordRangeAtPosition(position, this.gemRegexp());
     const documentText = document.getText();
     const line = document.lineAt(position.line).text.trim();
@@ -20,14 +19,12 @@ export class AbstractProvider implements vscode.HoverProvider {
     }
 
     const hexPackage = new HexPackage(dependency.name, dependency.requirements);
-    if (!cache.has(hexPackage.name)) {
-      const details = await hexPackage.details();
-      if (details !== undefined) {
-        cache.set(hexPackage.name, details);
-      }
-    }
-    const details = cache.get(hexPackage.name);
+
+    await this.cacheIfUncached(hexPackage);
+    const details = this.getCache(hexPackage);
     if (details === undefined) {
+      // somehow the Hex API call failed
+      // TODO: show error message in popup? and/or retry
       return;
     }
 
@@ -37,12 +34,46 @@ export class AbstractProvider implements vscode.HoverProvider {
   }
 
   public buildMessage(info: Details): string {
-    console.log("---- buildMessage");
-    return `${info.info}\n\nLatest version: ${info.version}\n\n${info.homepage_uri}`;
+    const str = `${info.name} (latest: ${info.latestVersion})\n\n${info.description}\n\n${info.htmlUrl}\n${info.docsHtmlUrl}`;
+
+    return str;
   }
 
   public gemRegexp(): RegExp {
-    console.log("ABSTRACT---");
     return /foo bar/;
+  }
+
+  private async cacheIfUncached(hexPackage: HexPackage): Promise<void> {
+    if (this.isAlreadyCached(hexPackage)) {
+      return;
+    }
+
+    // don't cache undefined
+    const details = await this.details(hexPackage);
+    if (details === undefined) {
+      return;
+    }
+
+    this.setCache(hexPackage, details);
+  }
+
+  private async details(hexPackage: HexPackage): Promise<Details | undefined> {
+    return hexPackage.details();
+  }
+
+  private cacheKey(hexPackage: HexPackage): string {
+    return hexPackage.name;
+  }
+
+  private getCache(hexPackage: HexPackage): Details | undefined {
+    return <Details>cache.get(this.cacheKey(hexPackage));
+  }
+
+  private setCache(hexPackage: HexPackage, details: Details): void {
+    cache.set(this.cacheKey(hexPackage), details);
+  }
+
+  private isAlreadyCached(hexPackage: HexPackage): boolean {
+    return cache.has(this.cacheKey(hexPackage));
   }
 }

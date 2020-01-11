@@ -5,15 +5,8 @@ interface Dependency {
   requirements: string | undefined;
 }
 
-// function quoteMapper(line: string): string {
-//   const quoteIndex = line.indexOf("'");
-//   const start = quoteIndex >= 0 ? quoteIndex : line.indexOf('"') || 0;
-//   return line.slice(start);
-// }
-
 const DOC_TEXT_DEPENDENCIES_REGEXP = /\s*defp deps do\s*\[(?:(?:\s*(?:\#.+|\{:(\w+),?.*\},?\n))+)\s*\]\s*end/gm;
 const LINE_NAME_DEPENDENCY_REGEXP = /\{:(\w+),?.*\}/;
-// const LINE_VERSION_REGEXP = /\{:\w+,\s+(?:[\"\'](.*\d+.*)[\"\'])?.*\}/gm;
 const LINE_VERSION_REGEXP = /[\"\'].+\s+([\d\.]*\d)[\"\'].+/;
 
 export function depNameFromLine(line: string) {
@@ -59,19 +52,6 @@ export function extractDependency(documentText: string, line: string): Dependenc
     return undefined;
   }
 
-  // const mapped = quoteMapper(line);
-  // const parts = mapped
-  //   .trim()
-  //   .split(",")
-  //   .map(s => s.trim().replace(/'|"/g, ""));
-
-  // if (parts.length >= 1) {
-  //   const name = parts[0];
-  //   const requirements = parts[1];
-  //   return { name: name, requirements: requirements };
-  // }
-
-  // return undefined;
   const name = depNameFromLine(line);
   const requirements = versionFromLine(line);
 
