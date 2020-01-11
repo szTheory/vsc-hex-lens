@@ -16,7 +16,6 @@ export function activate(context: vscode.ExtensionContext): void {
   const mixFile: vscode.DocumentFilter = {
     language: "elixir",
     pattern: "**/mix.exs",
-    // pattern: "mix.exs",
     scheme: "file"
   };
   context.subscriptions.push(

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { extractDependency } from "../extractDependency";
 import { HexPackage, Details } from "../hexPackage";
-import { cache } from "../common";
+import { RebarDependencyExtractor } from "../hex_dependency_extractors/rebarDependencyExtractor";
+import { MixDependencyExtractor } from "../hex_dependency_extractors/mixDependencyExtractor";
 
 export class AbstractProvider implements vscode.HoverProvider {
   public async provideHover(
@@ -9,16 +9,29 @@ export class AbstractProvider implements vscode.HoverProvider {
     position: vscode.Position,
     token: vscode.CancellationToken
   ): Promise<vscode.Hover | undefined> {
-    const range = document.getWordRangeAtPosition(position, this.gemRegexp());
+    const range = document.getWordRangeAtPosition(position);
     const documentText = document.getText();
     const line = document.lineAt(position.line).text.trim();
 
-    const dependency = extractDependency(documentText, line);
-    if (!dependency) {
+    let extractor = null;
+    if (document.languageId === "erlang") {
+      extractor = new RebarDependencyExtractor();
+    } else if (document.languageId === "elixir") {
+      extractor = new MixDependencyExtractor();
+    }
+
+    const hexDependency = extractor
+      ? extractor.extractHexDependency(documentText, line)
+      : null;
+
+    if (!hexDependency) {
       return;
     }
 
-    const hexPackage = new HexPackage(dependency.name, dependency.requirements);
+    const hexPackage = new HexPackage(
+      hexDependency.name,
+      hexDependency.requirements
+    );
 
     const details = await this.getDetails(hexPackage);
     if (details === null) {
@@ -36,10 +49,6 @@ export class AbstractProvider implements vscode.HoverProvider {
     const str = `${info.name} (latest: ${info.latestVersion})\n\n${info.description}\n\n${info.htmlUrl}`;
 
     return str;
-  }
-
-  public gemRegexp(): RegExp {
-    return /foo bar/;
   }
 
   private async getDetails(hexPackage: HexPackage): Promise<Details | null> {
