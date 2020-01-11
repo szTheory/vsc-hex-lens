@@ -1,23 +1,46 @@
 {
 	"name": "hex-lens",
+	"publisher": "szTheory",
 	"displayName": "hex-lens",
-	"description": "Hover info for Mix/Rebar3 packages for Elixir/Erlang from the Hex API including package version and description.",
+	"description": "Hover info for Rebar3 (Erlang) and Mix (Elixir) packages. Shows package version and description.",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"workspaceContains:mix.exs",
+		"workspaceContains:rebar.config"
 	],
+	"icon": "images/hex.png",
 	"main": "./out/extension.js",
+	"bugs": {
+		"url": "https://github.com/szTheory/vsc-hex-lens/issues"
+	},
+	"homepage": "https://github.com/szTheory/vsc-hex-lens",
 	"contributes": {
-		"commands": [
+		"languages": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"id": "erlang",
+				"aliases": [
+					"Erlang",
+					"erlang"
+				],
+				"filenames": [
+					"rebar.config"
+				]
+			},
+			{
+				"id": "elixir",
+				"aliases": [
+					"Elixir",
+					"elixir"
+				],
+				"filenames": [
+					"mix.exs"
+				]
 			}
 		]
 	},
@@ -35,8 +58,11 @@
 		"@types/vscode": "^1.41.0",
 		"glob": "^7.1.5",
 		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
+		"typescript": "^3.6.4",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"axios": "^0.19.1"
 	}
 }
