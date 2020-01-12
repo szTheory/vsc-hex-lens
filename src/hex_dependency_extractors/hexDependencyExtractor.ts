@@ -26,12 +26,12 @@ export abstract class HexDependencyExtractor {
   }
 
   depsText(): string {
-    const matches = this.docTextDepsRegexp().exec(this.documentText);
+    const matches = this.docTextDepsRegexp().exec(this.documentText.trim());
     if (matches === null || matches.length === 1) {
       return "";
     }
 
-    return matches[0];
+    return matches[1];
   }
 
   isDependency(): boolean {

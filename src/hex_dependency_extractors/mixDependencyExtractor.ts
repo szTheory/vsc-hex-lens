@@ -1,13 +1,6 @@
 import { HexDependencyExtractor } from "./hexDependencyExtractor";
 
-const DOC_TEXT_DEPENDENCIES_REGEXP = /\s*defp deps do\s*\[(?:(?:\s*(?:\#.+|\{:(\w+),?.*\},?\n))+)\s*\]\s*end/gm;
-const LINE_NAME_DEPENDENCY_REGEXP = /\{:(\w+),?.*\}/;
-
 export class MixDependencyExtractor extends HexDependencyExtractor {
-  docTextDepsRegexp(): RegExp {
-    return DOC_TEXT_DEPENDENCIES_REGEXP;
-  }
-
   depName(): string {
     const cleanLine = this.line.trim();
     const matches = this.lineNameDepRegexp().exec(cleanLine);
@@ -18,7 +11,11 @@ export class MixDependencyExtractor extends HexDependencyExtractor {
     return matches[1];
   }
 
+  docTextDepsRegexp(): RegExp {
+    return /(\s*defp deps do\s*\[(?:(?:\s*(?:\#.+|\{:(?:\w+),?.*\},?\n))+)\s*\]\s*end)/gm;
+  }
+
   lineNameDepRegexp(): RegExp {
-    return LINE_NAME_DEPENDENCY_REGEXP;
+    return /\{:(\w+),?.*\}/;
   }
 }

@@ -7,12 +7,10 @@ import { RebarDependencyExtractor } from "../../hex_dependency_extractors/rebarD
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("extractDependency test started...");
 
-  const docText = `
-  {deps, [
+  const docText = `{deps, [
     {rebar3_hex,".*",{git,"https://github.com/ninenines/cowlib","2.8.0"}},{ranch,".*",{git,"https://github.com/ninenines/ranch","1.7.1"}}
   ]}.
-  {erl_opts, [debug_info,warn_export_vars,warn_shadow_vars,warn_obsolete_guard,warn_missing_spec,warn_untyped_record]}.
-  `;
+  {erl_opts, [debug_info,warn_export_vars,warn_shadow_vars,warn_obsolete_guard,warn_missing_spec,warn_untyped_record]}.`;
 
   test("#depName multiple hover first", () => {
     assert.equal(
@@ -77,6 +75,37 @@ suite("Extension Test Suite", () => {
         "ranch"
       ).depName(),
       "ranch"
+    );
+  });
+
+  test("#depsText with cowboy's rebar config", () => {
+    assert.equal(
+      new RebarDependencyExtractor(
+        docText,
+        '{rebar3_hex,".*",{git,"https://github.com/ninenines/cowlib","2.8.0"}},{ranch,".*",{git,"https://github.com/ninenines/ranch","1.7.1"}}',
+        "rebar3_hex"
+      ).depsText(),
+      `
+  deps, [
+    {rebar3_hex,".*",{git,"https://github.com/ninenines/cowlib","2.8.0"}},{ranch,".*",{git,"https://github.com/ninenines/ranch","1.7.1"}}
+  ]`.trim()
+    );
+  });
+
+  test("#depsText with formatted rebar config", () => {
+    assert.equal(
+      new RebarDependencyExtractor(
+        formattedDocText,
+        '{ranch, ".*", {git, "https://github.com/ninenines/ranch", "1.7.1"}}',
+        "ranch"
+      ).depsText(),
+      `
+    deps,
+    [
+        {cowlib, ".*", {git, "https://github.com/ninenines/cowlib", "2.8.0"}},
+        {ranch, ".*", {git, "https://github.com/ninenines/ranch", "1.7.1"}}
+    ]
+      `.trim()
     );
   });
 });
