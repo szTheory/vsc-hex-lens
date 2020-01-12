@@ -3,7 +3,7 @@
   "publisher": "szTheory",
   "displayName": "hex-lens",
   "description": "Hover info for Rebar3 (Erlang) and Mix (Elixir) packages on Hex. Shows package version and description.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.41.0"
   },
