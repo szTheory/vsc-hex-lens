@@ -2,14 +2,22 @@
   "name": "hex-lens",
   "publisher": "szTheory",
   "displayName": "hex-lens",
-  "description": "Hover info for Rebar3 (Erlang) and Mix (Elixir) packages. Shows package version and description.",
+  "description": "Hover info for Rebar3 (Erlang) and Mix (Elixir) packages on Hex. Shows package version and description.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.41.0"
   },
+  "galleryBanner": {
+    "color": "#5c676d",
+    "theme": "dark"
+  },
   "categories": [
     "Programming Languages"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/szTheory/vsc-hex-lens"
+  },
   "activationEvents": [
     "workspaceContains:mix.exs",
     "workspaceContains:rebar.config"
