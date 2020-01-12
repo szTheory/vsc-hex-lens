@@ -1,10 +1,8 @@
-import * as assert from "assert";
-
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from "vscode";
+import * as assert from "assert";
 import { MixDependencyExtractor } from "../../hex_dependency_extractors/mixDependencyExtractor";
-// import * as myExtension from '../extension';
 
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("extractDependency test started...");
@@ -131,37 +129,6 @@ end
         "live"
       ).depName(),
       "phoenix_live_reload"
-    );
-  });
-
-  test("#depVersion 2 digits", () => {
-    assert.equal(
-      new MixDependencyExtractor(
-        docText,
-        '{:phoenix_pubsub, "~> 1.2"},',
-        "pubsub"
-      ).depVersion(),
-      "1.2"
-    );
-  });
-  test("#depVersion 3 digits", () => {
-    assert.equal(
-      new MixDependencyExtractor(
-        docText,
-        '{:html_sanitize_ex, "~> 1.4.0"}',
-        "html"
-      ).depVersion(),
-      "1.4.0"
-    );
-  });
-  test("#depVersion options", () => {
-    assert.equal(
-      new MixDependencyExtractor(
-        docText,
-        '{:phoenix_live_reload, "~> 1.3", only: :dev}',
-        "reload"
-      ).depVersion(),
-      "1.3"
     );
   });
 });

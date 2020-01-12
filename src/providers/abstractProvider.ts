@@ -31,10 +31,7 @@ export class AbstractProvider implements vscode.HoverProvider {
       return;
     }
 
-    const hexPackage = new HexPackage(
-      hexDependency.name,
-      hexDependency.requirements
-    );
+    const hexPackage = new HexPackage(hexDependency.name);
 
     const details = await this.getDetails(hexPackage);
     if (details === null) {

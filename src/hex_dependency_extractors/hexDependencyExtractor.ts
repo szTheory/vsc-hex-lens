@@ -1,6 +1,10 @@
 import { HexDependency } from "../hexDependency";
 
 export abstract class HexDependencyExtractor {
+  abstract depName(): string;
+  abstract docTextDepsRegexp(): RegExp;
+  abstract lineNameDepRegexp(): RegExp;
+
   protected documentText: string;
   protected line: string;
   protected hoverWord: string;
@@ -17,28 +21,8 @@ export abstract class HexDependencyExtractor {
     }
 
     const name = this.depName();
-    const requirements = this.depVersion();
 
-    return { name: name, requirements: requirements } as HexDependency;
-  }
-
-  depName(): string {
-    const cleanLine = this.line.trim();
-    const matches = this.lineNameDepRegexp().exec(cleanLine);
-    if (matches === null || matches.length === 1) {
-      return "";
-    }
-
-    return matches[1];
-  }
-
-  depVersion(): string {
-    const matches = this.lineVersionDepRegexp().exec(this.line);
-    if (matches === null || matches.length === 1) {
-      return "";
-    }
-
-    return matches[1];
+    return { name: name } as HexDependency;
   }
 
   depsText(): string {
@@ -59,10 +43,4 @@ export abstract class HexDependencyExtractor {
 
     return depsText.includes(cleanLine) && this.depName().trim() !== "";
   }
-
-  abstract docTextDepsRegexp(): RegExp;
-
-  abstract lineNameDepRegexp(): RegExp;
-
-  abstract lineVersionDepRegexp(): RegExp;
 }

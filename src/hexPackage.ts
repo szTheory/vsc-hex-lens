@@ -2,11 +2,9 @@ import axios from "axios";
 
 export class HexPackage {
   name: string;
-  requirements: string | undefined;
 
-  constructor(name: string, requirements: string | undefined) {
+  constructor(name: string) {
     this.name = name;
-    this.requirements = requirements;
   }
 
   async details(): Promise<Details | null> {
