@@ -2,6 +2,15 @@
 
 This is the README for your extension "hex-lens". After writing up a brief description, we recommend including the following sections.
 
+Rebar hover for BEAM languages (Erlang, Gleam, LFE, etc.) in `rebar.config`
+
+![Rebar config hover](https://user-images.githubusercontent.com/28652/72213879-8404f680-34ee-11ea-8575-3fe735ff84f3.gif)
+
+Mix hover for Elixir in `mix.exs`
+
+![mix](https://user-images.githubusercontent.com/28652/72213887-9b43e400-34ee-11ea-857d-14eb1deb8738.gif)
+
+
 ## Features
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
