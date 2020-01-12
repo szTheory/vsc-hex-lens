@@ -3,7 +3,6 @@ import { RebarProvider } from "./providers/rebarProvider";
 import { MixProvider } from "./providers/mixProvider";
 
 export function activate(context: vscode.ExtensionContext): void {
-  console.log("Hex lens extension activated");
   subscribeHoverProviderRebar(context);
   subscribeHoverProviderMix(context);
 }
