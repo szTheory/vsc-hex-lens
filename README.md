@@ -2,6 +2,8 @@
 
     Hover info for Rebar3 (Erlang) and Mix (Elixir) packages. Shows package version and description.
 
+Combine this extension with [hex.pm IntelliSense](https://marketplace.visualstudio.com/items?itemName=benvp.vscode-hex-pm-intellisense) by [benvp](https://github.com/benvp) to also get autocomplete when typing version numbers in your Elixir `mix.exs` file!
+
 ## Features
 
 ### Rebar hover for BEAM languages (Erlang, Gleam, LFE, etc.) in `rebar.config`
@@ -19,7 +21,7 @@ Works great with other extensions to provide all the things this one doesn't, su
 
 - ["Erlang" (pgourlain.erlang)](https://marketplace.visualstudio.com/items?itemName=pgourlain.erlang)
 - ["Elixir LS Fork" (elixir-lsp.elixir-ls)](https://marketplace.visualstudio.com/items?itemName=elixir-lsp.elixir-ls)
-
+- ["hex.pm IntelliSense" (benvp.vscode-hex-pm-intellisense)](https://marketplace.visualstudio.com/items?itemName=benvp.vscode-hex-pm-intellisense)
 
 ## Setup
 
